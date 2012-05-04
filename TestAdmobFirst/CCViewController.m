@@ -24,14 +24,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view, typically from a nib.
     bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
     bannerView_.adUnitID = MY_ADMOB_ID;
     bannerView_.rootViewController = self;
-    [self.view addSubview:bannerView_];
-    
     [bannerView_ loadRequest:[GADRequest request]];
+    [self.view addSubview:bannerView_];
+    [bannerView_ release];
     
+    [bannerView_ performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:5];
     
     [self.webView loadHTMLString:@"<a href=http://www.baidu.com'>baidu</a>" baseURL:nil];
 }
@@ -72,8 +74,18 @@
 }
 
 - (IBAction)Dial:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt:10086"]];
-    UINavigationController *navigationController = self.navigationController;
+    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+    bannerView_.adUnitID = MY_ADMOB_ID;
+    bannerView_.rootViewController = self;
+    [bannerView_ loadRequest:[GADRequest request]];
+    bannerView_.frame = CGRectMake(100, 100, bannerView_.frame.size.width, bannerView_.frame.size.height);
+    bannerView_ = nil;
+    [self.view addSubview:bannerView_];
+    
+    [bannerView_ release];    
+    
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt:10086"]];
+//    UINavigationController *navigationController = self.navigationController;
 //    [navigationController presentModalViewController: animated:YES]
 }
 
