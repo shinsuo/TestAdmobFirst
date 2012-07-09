@@ -12,6 +12,7 @@
 
 @implementation CCViewController
 @synthesize webView;
+@synthesize admob_id;
 
 - (void)didReceiveMemoryWarning
 {
@@ -26,21 +27,28 @@
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view, typically from a nib.
+    
+}
+
+- (void)addAdmob
+{
     bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-    bannerView_.adUnitID = MY_ADMOB_ID;
+    bannerView_.adUnitID = self.admob_id.text;
     bannerView_.rootViewController = self;
     [bannerView_ loadRequest:[GADRequest request]];
     [self.view addSubview:bannerView_];
     [bannerView_ release];
     
-    [bannerView_ performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:5];
+    //    [bannerView_ performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:5];
     
-    [self.webView loadHTMLString:@"<a href=http://www.baidu.com'>baidu</a>" baseURL:nil];
+    array = [[NSMutableArray alloc] init];
+    currentName = [[NSString alloc] initWithFormat:@"event1"];
 }
 
 - (void)viewDidUnload
 {
     [self setWebView:nil];
+    [self setAdmob_id:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -73,6 +81,10 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+- (IBAction)addAdmobID:(id)sender {
+    [self addAdmob];
+}
+
 - (IBAction)Dial:(id)sender {
     bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
     bannerView_.adUnitID = MY_ADMOB_ID;
@@ -87,13 +99,20 @@
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt:10086"]];
 //    UINavigationController *navigationController = self.navigationController;
 //    [navigationController presentModalViewController: animated:YES]
+    
+    [array addObject:currentName];
 }
 
 - (IBAction)webLink:(id)sender {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+    for (int i = 0 ; i < [array count];i++) {
+        NSLog(@"%i:%@",i,[array objectAtIndex:i]);
+    }
+    [array removeAllObjects];
 }
 - (void)dealloc {
     [webView release];
+    [admob_id release];
     [super dealloc];
 }
 

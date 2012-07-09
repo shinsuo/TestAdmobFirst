@@ -12,8 +12,12 @@
 @interface CCViewController : UIViewController <UIWebViewDelegate>
 {
     GADBannerView *bannerView_;
+    NSMutableArray *array;
+    NSString *currentName;
 }
 @property (retain, nonatomic) UIWebView *webView;
+@property (retain, nonatomic) IBOutlet UITextField *admob_id;
+- (IBAction)addAdmobID:(id)sender;
 
 - (IBAction)Dial:(id)sender;
 - (IBAction)webLink:(id)sender;
